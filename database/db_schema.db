@@ -7,7 +7,7 @@ CREATE TABLE users (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(100) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
-    role ENUM('INFIRMIER', 'GENERALISTE') NOT NULL,
+    role ENUM('INFIRMIER', 'GENERALISTE', 'SPECIALISTE') NOT NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 CREATE TABLE patients (
@@ -18,7 +18,7 @@ CREATE TABLE patients (
     social_security_number VARCHAR(50) NOT NULL UNIQUE,
     blood_pressure VARCHAR(30) NOT NULL,
     heart_rate INT NOT NULL,
-    temperature DECIMAL(4, 1) NOT NULL,
+    temperature FLOAT NOT NULL,
     respiratory_rate INT NOT NULL,
     arrived_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT chk_patients_heart_rate_positive CHECK (heart_rate > 0),
@@ -33,7 +33,7 @@ CREATE TABLE consultations (
     observations TEXT NULL,
     diagnosis TEXT NULL,
     prescribed_treatment TEXT NULL,
-    cost DECIMAL(10, 2) NULL,
+    cost FLOAT NULL,
     status ENUM('EN_ATTENTE', 'TERMINEE') NOT NULL DEFAULT 'EN_ATTENTE',
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     closed_at DATETIME NULL,
@@ -58,7 +58,7 @@ VALUES
 -- modification de la table users pour ajouter specialité --
 ALTER TABLE users
      ADD COLUMN specialite ENUM('CARDIOLOGIE', 'PNEUMOLOGIE', 'DERMATOLOGIE', 'NEUROLOGIE', 'ENDOCRINOLOGIE') NULL,
-     ADD COLUMN tarif DECIMAL(10, 2) NULL;
+     ADD COLUMN tarif FLOAT NULL;
 
 -- ajouter table demande_expertise
 
@@ -75,3 +75,8 @@ CREATE TABLE demande_expertise (
     CONSTRAINT fk_demandes_consultation FOREIGN KEY (consultation_id) REFERENCES consultations(id) ON DELETE CASCADE,
     CONSTRAINT fk_demandes_specialiste_user FOREIGN KEY (specialiste_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
+CREATE INDEX idx_users_role_specialite_tarif ON users(role, specialite, tarif);
+CREATE INDEX idx_demande_expertise_specialiste_statut_priorite
+    ON demande_expertise(specialiste_id, statut, priorite);
+CREATE INDEX idx_demande_expertise_consultation ON demande_expertise(consultation_id);

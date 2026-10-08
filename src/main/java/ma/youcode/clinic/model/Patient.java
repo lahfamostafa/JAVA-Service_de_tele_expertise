@@ -1,20 +1,34 @@
 package ma.youcode.clinic.model;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "patients")
 public class Patient {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "last_name", nullable = false)
     private String lastName;
+    @Column(name = "first_name", nullable = false)
     private String firstName;
+    @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate;
+    @Column(name = "social_security_number", nullable = false, unique = true)
     private String socialSecurityNumber;
+    @Column(name = "blood_pressure", nullable = false)
     private String bloodPressure;
+    @Column(name = "heart_rate", nullable = false)
     private Integer heartRate;
-    private BigDecimal temperature;
+    @Column(nullable = false)
+    private float temperature;
+    @Column(name = "respiratory_rate", nullable = false)
     private Integer respiratoryRate;
+    @Column(name = "arrived_at", nullable = false)
     private LocalDateTime arrivedAt;
 
     public Patient() {
@@ -22,7 +36,7 @@ public class Patient {
 
     public Patient(Long id, String lastName, String firstName, LocalDate birthDate,
             String socialSecurityNumber, String bloodPressure, Integer heartRate,
-            BigDecimal temperature, Integer respiratoryRate, LocalDateTime arrivedAt) {
+            float temperature, Integer respiratoryRate, LocalDateTime arrivedAt) {
         this.id = id;
         this.lastName = lastName;
         this.firstName = firstName;
@@ -34,7 +48,7 @@ public class Patient {
         this.respiratoryRate = respiratoryRate;
         this.arrivedAt = arrivedAt;
     }
-    // public Patient(String bloodPressure,Integer heartRate,BigDecimal
+    // public Patient(String bloodPressure,Integer heartRate,float
     // temperature,Integer respiratoryRate,LocalDateTime arrivedAt){
     // this.bloodPressure = bloodPressure;
     // this.heartRate = heartRate;
@@ -99,11 +113,11 @@ public class Patient {
         this.heartRate = heartRate;
     }
 
-    public BigDecimal getTemperature() {
+    public float getTemperature() {
         return temperature;
     }
 
-    public void setTemperature(BigDecimal temperature) {
+    public void setTemperature(float temperature) {
         this.temperature = temperature;
     }
 

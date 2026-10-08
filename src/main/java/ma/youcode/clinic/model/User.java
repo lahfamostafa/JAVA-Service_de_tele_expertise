@@ -1,15 +1,32 @@
 package ma.youcode.clinic.model;
 
-
 import java.time.LocalDateTime;
+import jakarta.persistence.*;
 
-
+@Entity
+@Table(name = "users")
 public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false, unique = true)
     private String username;
+
+    @Column(name = "password_hash", nullable = false)
     private String passwordHash;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Role role;
+
+    @Enumerated(EnumType.STRING)
+    private Specialite specialite;
+
+    private Float tarif;
+
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
     public User() {
@@ -55,6 +72,22 @@ public class User {
         this.role = role;
     }
 
+    public Specialite getSpecialite() {
+        return specialite;
+    }
+
+    public void setSpecialite(Specialite specialite) {
+        this.specialite = specialite;
+    }
+
+    public Float getTarif() {
+        return tarif;
+    }
+
+    public void setTarif(Float tarif) {
+        this.tarif = tarif;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -63,4 +96,3 @@ public class User {
         this.createdAt = createdAt;
     }
 }
-

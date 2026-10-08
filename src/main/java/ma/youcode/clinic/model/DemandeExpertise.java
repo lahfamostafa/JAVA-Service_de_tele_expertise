@@ -1,26 +1,47 @@
 package ma.youcode.clinic.model;
 
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "demande_expertise")
 public class DemandeExpertise {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "consultation_id", nullable = false)
     private Consultation consultation;
 
-    private Specialiste specialiste;
+    @ManyToOne
+    @JoinColumn(name = "specialiste_id", nullable = false)
+    private User specialiste;
 
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String question;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Priorite priorite;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private StatutDemande statut;
 
+    @Column(columnDefinition = "TEXT")
     private String avis;
 
+    @Column(columnDefinition = "TEXT")
     private String recommandations;
 
+    @Column(name = "date_creation", nullable = false)
     private LocalDateTime dateCreation;
+
+    public DemandeExpertise() {
+    }
+
 
     public Long getId() {
         return id;
@@ -38,11 +59,11 @@ public class DemandeExpertise {
         this.consultation = consultation;
     }
 
-    public Specialiste getSpecialiste() {
+    public User getSpecialiste() {
         return specialiste;
     }
 
-    public void setSpecialiste(Specialiste specialiste) {
+    public void setSpecialiste(User specialiste) {
         this.specialiste = specialiste;
     }
 

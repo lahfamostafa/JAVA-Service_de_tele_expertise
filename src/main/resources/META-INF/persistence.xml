@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    version="3.0"
+    xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
+
+    <persistence-unit name="myPersistenceUnit" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <!-- Optional: Explicitly list managed entity classes -->
+        <class>ma.youcode.clinic.model.User</class>
+        <class>ma.youcode.clinic.model.Patient</class>
+        <class>ma.youcode.clinic.model.Consultation</class>
+        <class>ma.youcode.clinic.model.DemandeExpertise</class>
+        <!-- <class>ma.youcode.clinic.model.</class> -->
+        <properties>
+            <!-- Database Connection Properties -->
+            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
+            <property name="jakarta.persistence.jdbc.url"
+                value="jdbc:mysql://localhost:3306/gestion_clinique" />
+            <property name="jakarta.persistence.jdbc.user" value="root" />
+            <property name="jakarta.persistence.jdbc.password" value="amine@2002@N" />
+
+            <!-- Hibernate Specific Properties -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+            <property name="hibernate.hbm2ddl.auto" value="validate" />
+            <property name="hibernate.show_sql" value="true" />
+        </properties>
+    </persistence-unit>
+</persistence>   
