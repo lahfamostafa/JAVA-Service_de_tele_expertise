@@ -20,7 +20,7 @@
             </param-name>
 
             <param-value>
-                ma.youcode.clinic.resource
+                ma.youcode.clinic.resource,ma.youcode.clinic.security
             </param-value>
         </init-param>
 

@@ -1,6 +1,5 @@
 package ma.youcode.clinic.repository;
 
-import java.lang.StackWalker.Option;
 import java.util.Optional;
 
 import jakarta.persistence.EntityManager;
@@ -19,16 +18,12 @@ public class UserRepository {
                     "SELECT u FROM User u WHERE u.username = :username", User.class)
                     .setParameter("username", username)
                     .getSingleResult();
-            // User userFinded = Optional.of(user);
             return Optional.of(user);
 
         } catch (NoResultException e) {
 
             return Optional.empty();
 
-        } catch (PersistenceException e) {
-            // Handle exception or log it
-            throw e;
         } finally {
 
             if (entityManager != null && entityManager.isOpen()) {

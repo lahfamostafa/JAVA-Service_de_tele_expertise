@@ -1,4 +1,4 @@
-package ma.youcode.clinic.resource;
+package ma.youcode.clinic.security;
 
 import jakarta.ws.rs.core.Feature;
 import jakarta.ws.rs.core.FeatureContext;
