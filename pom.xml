@@ -51,6 +51,18 @@
       <artifactId>jersey-media-json-jackson</artifactId>
       <version>3.1.11</version>
     </dependency>
+    <dependency>
+        <groupId>org.hibernate.orm</groupId>
+        <artifactId>hibernate-core</artifactId>
+        <version>6.4.4.Final</version>
+    </dependency>
+
+    <!-- Connecteur MySQL / MariaDB (nécessaire pour la connexion BDD) -->
+    <dependency>
+        <groupId>com.mysql</groupId>
+        <artifactId>mysql-connector-j</artifactId>
+        <version>8.3.0</version>
+    </dependency>
   </dependencies>
 
   <build>
