@@ -5,21 +5,13 @@ import java.time.LocalDateTime;
 public class DemandeExpertise {
 
     private Long id;
-
     private Consultation consultation;
-
     private Specialiste specialiste;
-
     private String question;
-
     private Priorite priorite;
-
     private StatutDemande statut;
-
     private String avis;
-
     private String recommandations;
-
     private LocalDateTime dateCreation;
 
     public Long getId() {

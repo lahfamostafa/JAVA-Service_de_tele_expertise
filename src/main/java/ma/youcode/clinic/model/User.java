@@ -10,6 +10,8 @@ public class User {
     private String username;
     private String passwordHash;
     private Role role;
+    private Specialite specialite;
+    private Double tarif;
     private LocalDateTime createdAt;
 
     public User() {
@@ -61,6 +63,22 @@ public class User {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Specialite getSpecialite() {
+        return specialite;
+    }
+
+    public void setSpecialite(Specialite specialite) {
+        this.specialite = specialite;
+    }
+
+    public Double getTarif() {
+        return tarif;
+    }
+
+    public void setTarif(Double tarif) {
+        this.tarif = tarif;
     }
 }
 

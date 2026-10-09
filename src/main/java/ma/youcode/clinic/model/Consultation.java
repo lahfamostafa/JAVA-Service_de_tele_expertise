@@ -1,7 +1,6 @@
 package ma.youcode.clinic.model;
 
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class Consultation {
@@ -13,7 +12,7 @@ public class Consultation {
     private String observations;
     private String diagnosis;
     private String prescribedTreatment;
-    private BigDecimal cost;
+    private Double cost;
     private ConsultationStatus status;
     private LocalDateTime closedAt;
 
@@ -29,7 +28,7 @@ public class Consultation {
 
     public Consultation(Long id, Long patientId, Long doctorId, String reason,
             String observations, String diagnosis, String prescribedTreatment,
-            BigDecimal cost, ConsultationStatus status, LocalDateTime closedAt) {
+            Double cost, ConsultationStatus status, LocalDateTime closedAt) {
         this.id = id;
         this.patientId = patientId;
         this.doctorId = doctorId;
@@ -98,11 +97,11 @@ public class Consultation {
         this.prescribedTreatment = prescribedTreatment;
     }
 
-    public BigDecimal getCost() {
+    public Double getCost() {
         return cost;
     }
 
-    public void setCost(BigDecimal cost) {
+    public void setCost(Double cost) {
         this.cost = cost;
     }
 

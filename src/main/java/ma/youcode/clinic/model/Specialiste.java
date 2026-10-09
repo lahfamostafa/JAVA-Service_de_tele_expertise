@@ -1,12 +1,11 @@
 package ma.youcode.clinic.model;
 
-import java.math.BigDecimal;
 
 public class Specialiste {
     private Long id;
     private long userId;
     private Specialite Specialite;
-    private BigDecimal tarif;
+    private Double tarif;
 
     public Long getId() {
         return id;
@@ -32,11 +31,11 @@ public class Specialiste {
         this.Specialite = Specialite;
     }
 
-    public BigDecimal getTarif() {
+    public Double getTarif() {
         return tarif;
     }
 
-    public void setTarif(BigDecimal tarif) {
+    public void setTarif(Double tarif) {
         this.tarif = tarif;
     }
 }
