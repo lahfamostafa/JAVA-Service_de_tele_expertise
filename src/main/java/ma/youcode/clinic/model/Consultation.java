@@ -1,5 +1,9 @@
 package ma.youcode.clinic.model;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/develop
 import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
@@ -29,7 +33,7 @@ public class Consultation {
     @Column(name = "prescribed_treatment", columnDefinition = "TEXT")
     private String prescribedTreatment;
     @Column
-    private float cost;
+    private Double cost;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ConsultationStatus status;
@@ -50,7 +54,7 @@ public class Consultation {
 
     public Consultation(Long id, Patient patient, User doctor, String reason,
             String observations, String diagnosis, String prescribedTreatment,
-            float cost, ConsultationStatus status, LocalDateTime closedAt) {
+            Double cost, ConsultationStatus status, LocalDateTime closedAt) {
         this.id = id;
         this.patient = patient;
         this.doctor = doctor;
@@ -119,11 +123,11 @@ public class Consultation {
         this.prescribedTreatment = prescribedTreatment;
     }
 
-    public float getCost() {
+    public Double getCost() {
         return cost;
     }
 
-    public void setCost(float cost) {
+    public void setCost(Double cost) {
         this.cost = cost;
     }
 

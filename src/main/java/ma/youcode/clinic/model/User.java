@@ -24,7 +24,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Specialite specialite;
 
-    private Float tarif;
+    private Double tarif;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
@@ -72,6 +72,15 @@ public class User {
         this.role = role;
     }
 
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
     public Specialite getSpecialite() {
         return specialite;
     }
@@ -80,19 +89,11 @@ public class User {
         this.specialite = specialite;
     }
 
-    public Float getTarif() {
+    public Double getTarif() {
         return tarif;
     }
 
-    public void setTarif(Float tarif) {
+    public void setTarif(Double tarif) {
         this.tarif = tarif;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
     }
 }
