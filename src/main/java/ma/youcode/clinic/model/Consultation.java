@@ -1,37 +1,63 @@
 package ma.youcode.clinic.model;
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> origin/develop
 import java.time.LocalDateTime;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "consultations")
 public class Consultation {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long patientId;
-    private Long doctorId;
+
+    @ManyToOne
+    @JoinColumn(name = "patient_id", nullable = false)
+    private Patient patient;
+
+    @ManyToOne
+    @JoinColumn(name = "doctor_id")
+    private User doctor;
+
+    @Column(length = 255)
     private String reason;
+    @Column(columnDefinition = "TEXT")
     private String observations;
+    @Column(columnDefinition = "TEXT")
     private String diagnosis;
+    @Column(name = "prescribed_treatment", columnDefinition = "TEXT")
     private String prescribedTreatment;
+    @Column
     private Double cost;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private ConsultationStatus status;
+    @Column(name = "closed_at")
     private LocalDateTime closedAt;
+
+    public Consultation() {
+    }
 
     public Consultation(
             Long id,
-            Long patientId,
-            ConsultationStatus status
-    ) {
+            Patient patient,
+            ConsultationStatus status) {
         this.id = id;
-        this.patientId = patientId;
+        this.patient = patient;
         this.status = status;
     }
 
-    public Consultation(Long id, Long patientId, Long doctorId, String reason,
+    public Consultation(Long id, Patient patient, User doctor, String reason,
             String observations, String diagnosis, String prescribedTreatment,
             Double cost, ConsultationStatus status, LocalDateTime closedAt) {
         this.id = id;
-        this.patientId = patientId;
-        this.doctorId = doctorId;
+        this.patient = patient;
+        this.doctor = doctor;
         this.reason = reason;
         this.observations = observations;
         this.diagnosis = diagnosis;
@@ -49,20 +75,20 @@ public class Consultation {
         this.id = id;
     }
 
-    public Long getPatientId() {
-        return patientId;
+    public Patient getPatient() {
+        return patient;
     }
 
-    public void setPatientId(Long patientId) {
-        this.patientId = patientId;
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 
-    public Long getDoctorId() {
-        return doctorId;
+    public User getDoctor() {
+        return doctor;
     }
 
-    public void setDoctorId(Long doctorId) {
-        this.doctorId = doctorId;
+    public void setDoctor(User doctor) {
+        this.doctor = doctor;
     }
 
     public String getReason() {
@@ -121,4 +147,3 @@ public class Consultation {
         this.closedAt = closedAt;
     }
 }
-

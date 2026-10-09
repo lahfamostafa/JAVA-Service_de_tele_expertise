@@ -1,7 +1,7 @@
 package ma.youcode.clinic.model;
 
 public enum Priorite {
-    URGENCE,
-    NPRMAL,
+    URGENTE,
+    NORMALE,
     NON_URGENTE
 }

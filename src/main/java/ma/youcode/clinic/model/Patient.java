@@ -3,17 +3,32 @@ package ma.youcode.clinic.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "patients")
 public class Patient {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "last_name", nullable = false)
     private String lastName;
+    @Column(name = "first_name", nullable = false)
     private String firstName;
+    @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate;
+    @Column(name = "social_security_number", nullable = false, unique = true)
     private String socialSecurityNumber;
+    @Column(name = "blood_pressure", nullable = false)
     private String bloodPressure;
+    @Column(name = "heart_rate", nullable = false)
     private Integer heartRate;
+    @Column(nullable = false)
     private Double temperature;
+    @Column(name = "respiratory_rate", nullable = false)
     private Integer respiratoryRate;
+    @Column(name = "arrived_at", nullable = false)
     private LocalDateTime arrivedAt;
 
     public Patient() {

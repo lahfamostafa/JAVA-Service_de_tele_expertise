@@ -1,29 +1,40 @@
 package ma.youcode.clinic.repository;
 
-import java.util.List;
+import java.lang.StackWalker.Option;
+import java.util.Optional;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.PersistenceException;
 import ma.youcode.clinic.config.JPAUtil;
-import ma.youcode.clinic.model.Role;
 import ma.youcode.clinic.model.User;
 
 public class UserRepository {
-    public List<User> findSpecialistes(){
-        EntityManager em = JPAUtil.getEntityManager();
-        try {
-            return em.createQuery("Select u From User u Where u.role = :role",User.class).setParameter("role", Role.SPECIALISTE).getResultList();
-            
-        } finally {
-            em.close();
-        }
-    }
 
-    public User findById(Long id){
-        EntityManager em = JPAUtil.getEntityManager();
+    public Optional<User> findByUsername(String username) {
+        EntityManager entityManager = null;
         try {
-            return em.find(User.class, id);
+            entityManager = JPAUtil.getEntityManager();
+            User user = entityManager.createQuery(
+                    "SELECT u FROM User u WHERE u.username = :username", User.class)
+                    .setParameter("username", username)
+                    .getSingleResult();
+            // User userFinded = Optional.of(user);
+            return Optional.of(user);
+
+        } catch (NoResultException e) {
+
+            return Optional.empty();
+
+        } catch (PersistenceException e) {
+            // Handle exception or log it
+            throw e;
         } finally {
-            em.close();
+
+            if (entityManager != null && entityManager.isOpen()) {
+                entityManager.close();
+            }
         }
+
     }
 }
