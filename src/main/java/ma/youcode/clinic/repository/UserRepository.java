@@ -4,7 +4,8 @@ import java.util.Optional;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
-import ma.youcode.clinic.config.JpaUtil;
+import jakarta.persistence.PersistenceException;
+import ma.youcode.clinic.config.JPAUtil;
 import ma.youcode.clinic.model.User;
 
 public class UserRepository {
@@ -12,7 +13,7 @@ public class UserRepository {
     public Optional<User> findByUsername(String username) {
         EntityManager entityManager = null;
         try {
-            entityManager = JpaUtil.getEntityManager();
+            entityManager = JPAUtil.getEntityManager();
             User user = entityManager.createQuery(
                     "SELECT u FROM User u WHERE u.username = :username", User.class)
                     .setParameter("username", username)

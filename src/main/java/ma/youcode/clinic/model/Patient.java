@@ -25,7 +25,7 @@ public class Patient {
     @Column(name = "heart_rate", nullable = false)
     private Integer heartRate;
     @Column(nullable = false)
-    private float temperature;
+    private Double temperature;
     @Column(name = "respiratory_rate", nullable = false)
     private Integer respiratoryRate;
     @Column(name = "arrived_at", nullable = false)
@@ -36,7 +36,7 @@ public class Patient {
 
     public Patient(Long id, String lastName, String firstName, LocalDate birthDate,
             String socialSecurityNumber, String bloodPressure, Integer heartRate,
-            float temperature, Integer respiratoryRate, LocalDateTime arrivedAt) {
+            Double temperature, Integer respiratoryRate, LocalDateTime arrivedAt) {
         this.id = id;
         this.lastName = lastName;
         this.firstName = firstName;
@@ -48,7 +48,7 @@ public class Patient {
         this.respiratoryRate = respiratoryRate;
         this.arrivedAt = arrivedAt;
     }
-    // public Patient(String bloodPressure,Integer heartRate,float
+    // public Patient(String bloodPressure,Integer heartRate,Double
     // temperature,Integer respiratoryRate,LocalDateTime arrivedAt){
     // this.bloodPressure = bloodPressure;
     // this.heartRate = heartRate;
@@ -113,11 +113,11 @@ public class Patient {
         this.heartRate = heartRate;
     }
 
-    public float getTemperature() {
+    public Double getTemperature() {
         return temperature;
     }
 
-    public void setTemperature(float temperature) {
+    public void setTemperature(Double temperature) {
         this.temperature = temperature;
     }
 

@@ -10,11 +10,11 @@ import jakarta.ws.rs.core.MediaType;
 public class HelloResource {
 
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public String hello() {
         return """
                 {
-                  "message": "Jakarta REST fonctionne"
+                  "message": "Jakarta REST fonctionne","errr" :"ghjkjh"
                 }
                 """;
     }
