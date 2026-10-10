@@ -1,9 +1,5 @@
 package ma.youcode.clinic.model;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/develop
 import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
@@ -32,7 +28,7 @@ public class Consultation {
     private String diagnosis;
     @Column(name = "prescribed_treatment", columnDefinition = "TEXT")
     private String prescribedTreatment;
-    @Column
+    @Column(name="cost",columnDefinition = "DECIMAL(10,2)")
     private Double cost;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
