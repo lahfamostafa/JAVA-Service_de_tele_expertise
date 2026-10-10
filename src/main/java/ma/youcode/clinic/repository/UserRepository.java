@@ -1,12 +1,13 @@
 package ma.youcode.clinic.repository;
 
-import java.lang.StackWalker.Option;
+import java.util.List;
 import java.util.Optional;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceException;
 import ma.youcode.clinic.config.JPAUtil;
+import ma.youcode.clinic.model.Role;
 import ma.youcode.clinic.model.User;
 
 public class UserRepository {
@@ -36,5 +37,27 @@ public class UserRepository {
             }
         }
 
+    }
+
+    public List<User> findSpecialistes(){
+        EntityManager em = JPAUtil.getEntityManager();
+        try{
+            return em.createQuery("Select u from User u where u.role = :role", User.class)
+            .setParameter("role",Role.SPECIALISTE)
+            .getResultList();
+        }finally {
+            if (em != null && em.isOpen()) {
+                em.close();
+            }
+        }
+    }
+
+    public User findById(Long id){
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            return em.find(User.class, id);
+        } finally {
+            em.close();
+        }
     }
 }
