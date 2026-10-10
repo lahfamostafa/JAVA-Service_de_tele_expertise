@@ -1,9 +1,5 @@
 package ma.youcode.clinic.model;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/develop
 import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
