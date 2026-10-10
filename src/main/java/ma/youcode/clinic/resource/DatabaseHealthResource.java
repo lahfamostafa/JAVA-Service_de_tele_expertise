@@ -10,7 +10,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import ma.youcode.clinic.config.JPAUtil;
+import ma.youcode.clinic.config.JpaUtil;
 
 @Path("health/database")
 @Produces(MediaType.APPLICATION_JSON)
@@ -22,7 +22,7 @@ public class DatabaseHealthResource {
         EntityManager entityManager = null;
 
         try {
-            entityManager = JPAUtil.getEntityManager();
+            entityManager = JpaUtil.getEntityManager();
 
             Object result = entityManager
                     .createNativeQuery("SELECT 1")
