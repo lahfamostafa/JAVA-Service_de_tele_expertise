@@ -6,7 +6,7 @@ import jakarta.persistence.Persistence;
 
 public class JPAUtil {
 
-    private static final String PERSISTENCE_UNIT_NAME = "teleexpertisePU"; 
+    private static final String PERSISTENCE_UNIT_NAME = "myPersistenceUnit"; 
     private static EntityManagerFactory factory;
 
     // Bloc statique ou méthode d'initialisation du Singleton

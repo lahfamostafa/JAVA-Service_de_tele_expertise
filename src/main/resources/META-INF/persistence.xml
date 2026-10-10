@@ -19,7 +19,7 @@
             <property name="jakarta.persistence.jdbc.url"
                 value="jdbc:mysql://localhost:3306/gestion_clinique" />
             <property name="jakarta.persistence.jdbc.user" value="root" />
-            <property name="jakarta.persistence.jdbc.password" value="amine@2002@N" />
+            <property name="jakarta.persistence.jdbc.password" value="" />
 
             <!-- Hibernate Specific Properties -->
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
