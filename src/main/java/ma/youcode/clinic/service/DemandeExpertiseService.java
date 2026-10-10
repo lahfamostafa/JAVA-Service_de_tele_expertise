@@ -32,12 +32,15 @@ public class DemandeExpertiseService {
         }
 
         DemandeExpertise demande = new DemandeExpertise();
-        Consultation consultation = 
-        demande.setConsultation(dto.getConsultationId());
-        demande.setSpecialiste(dto.getSpecialisteId());
+        Consultation consultation = new Consultation();
+
+        consultation.setId(dto.getConsultationId());
+        demande.setConsultation(consultation);
+        demande.setSpecialiste(specialiste);
         demande.setQuestion(dto.getQuestion());
         demande.setPriorite(prioriteEnum);
         demande.setStatut(StatutDemande.EN_ATTENTE);
+        demandeRepository.save(demande);
         return demande;
     }
 }

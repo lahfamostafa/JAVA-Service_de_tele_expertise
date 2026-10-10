@@ -1,6 +1,9 @@
 package ma.youcode.clinic.model;
 
 import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -27,6 +30,7 @@ public class User {
     private Double tarif;
 
     @Column(name = "created_at", nullable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
     public User() {
