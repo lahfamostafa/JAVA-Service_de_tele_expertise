@@ -4,7 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
-public class JPAUtil {
+public class JpaUtil {
 
     private static final String PERSISTENCE_UNIT_NAME = "teleexpertisePU"; 
     private static EntityManagerFactory factory;
