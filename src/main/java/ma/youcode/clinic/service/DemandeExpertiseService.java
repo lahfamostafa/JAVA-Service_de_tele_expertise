@@ -1,5 +1,6 @@
 package ma.youcode.clinic.service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import ma.youcode.clinic.dto.DemandeRequestDTO;
@@ -58,6 +59,7 @@ public class DemandeExpertiseService {
         demande.setQuestion(dto.getQuestion());
         demande.setPriorite(dto.getPriorite());
         demande.setStatut(StatutDemande.EN_ATTENTE);
+        demande.setDateCreation(LocalDateTime.now());
         demandeRepository.save(demande);
         return demande;
     }
