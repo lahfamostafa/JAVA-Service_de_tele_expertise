@@ -25,9 +25,9 @@ public class BasicAuthenticationFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext) {
-        if (requestContext.getUriInfo().getPath().equals("health/database") || requestContext.getUriInfo().getPath().equals("demandes") ) {
-            return ;
-        }
+        // if (requestContext.getUriInfo().getPath().equals("health/database") || requestContext.getUriInfo().getPath().equals("demandes") ) {
+        //     return ;
+        // }
         String authorization = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
 
         if (authorization == null || !authorization.startsWith(BASIC_PREFIX)) {

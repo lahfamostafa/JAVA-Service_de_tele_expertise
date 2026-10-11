@@ -10,6 +10,7 @@ import ma.youcode.clinic.dto.DemandeRequestDTO;
 import ma.youcode.clinic.dto.DemandeResponseDTO;
 import ma.youcode.clinic.service.DemandeExpertiseService;
 import ma.youcode.clinic.model.DemandeExpertise;
+import ma.youcode.clinic.exception.ForbiddenOperationException;
 import java.util.Map;
 
 @Path("demandes")
@@ -20,7 +21,7 @@ public class DemandeExpertiseResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    // @RolesAllowed("GENERALISTE")
+    @RolesAllowed("GENERALISTE")
     public Response creerDemande(DemandeRequestDTO dto, @Context SecurityContext securityContext) {
         // return Response.status(Response.Status.NOT_IMPLEMENTED).build();
 
@@ -29,10 +30,13 @@ public class DemandeExpertiseResource {
                     .entity(Map.of("message", "Données manquantes"))
                     .build();
         }
-
         // return Response.ok(dto).build();
         try {
-            DemandeExpertise demande = service.creerDemande(dto);
+            String username = securityContext
+                    .getUserPrincipal()
+                    .getName();
+            // DemandeExpertise demande = service.creerDemande(dto , String username);
+            DemandeExpertise demande = service.creerDemande(dto, username);
 
             DemandeResponseDTO resDto = new DemandeResponseDTO();
             resDto.setId(demande.getId());
@@ -49,6 +53,9 @@ public class DemandeExpertiseResource {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity("{\"error\": \"" + e.getMessage() + "\"}")
                     .build(); // HTTP 400
+        } catch (ForbiddenOperationException e) {
+            return Response.status(Response.Status.FORBIDDEN).entity(Map.of("error", e.getMessage()))
+                    .build();
         } catch (RuntimeException e) {
             if (e.getMessage().startsWith("NOT_FOUND")) {
                 return Response.status(Response.Status.NOT_FOUND)
@@ -58,4 +65,6 @@ public class DemandeExpertiseResource {
             return Response.serverError().build();
         }
     }
+
+    // private Boolean verifier
 }
