@@ -11,47 +11,44 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-import ma.youcode.clinic.config.JpaUtil;
+import ma.youcode.clinic.config.JPAUtil;
 
 @Path("health/database")
 @Produces(MediaType.APPLICATION_JSON)
 public class DatabaseHealthResource {
 
-    @GET
-    public Response checkDatabaseConnection() {
+        @GET
+        public Response checkDatabaseConnection() {
 
-        EntityManager entityManager = null;
+                EntityManager entityManager = null;
 
-        try {
-            entityManager = JpaUtil.getEntityManager();
+                try {
+                        entityManager = JPAUtil.getEntityManager();
 
-            Object result = entityManager
-                    .createNativeQuery("SELECT 1")
-                    .getSingleResult();
+                        Object result = entityManager
+                                        .createNativeQuery("SELECT 1")
+                                        .getSingleResult();
 
-            return Response.ok(
-                    Map.of(
-                            "status", "UP",
-                            "database", "CONNECTED"
-                    )
-            ).build();
+                        return Response.ok(
+                                        Map.of(
+                                                        "status", "UP",
+                                                        "database", "CONNECTED"))
+                                        .build();
 
-        } catch (PersistenceException exception) {
+                } catch (PersistenceException exception) {
 
-            return Response.status(
-                    Response.Status.SERVICE_UNAVAILABLE
-            ).entity(
-                    Map.of(
-                            "status", "DOWN",
-                            "database", "DISCONNECTED"
-                    )
-            ).build();
+                        return Response.status(
+                                        Response.Status.SERVICE_UNAVAILABLE).entity(
+                                                        Map.of(
+                                                                        "status", "DOWN",
+                                                                        "database", "DISCONNECTED"))
+                                        .build();
 
-        } finally {
-            if (entityManager != null
-                    && entityManager.isOpen()) {
-                entityManager.close();
-            }
+                } finally {
+                        if (entityManager != null
+                                        && entityManager.isOpen()) {
+                                entityManager.close();
+                        }
+                }
         }
-    }
 }

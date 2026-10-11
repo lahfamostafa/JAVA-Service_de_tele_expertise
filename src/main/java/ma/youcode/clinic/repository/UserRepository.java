@@ -32,4 +32,21 @@ public class UserRepository {
         }
 
     }
+
+    public Optional<User> findById(Long id) {
+        EntityManager entityManager = null;
+        try {
+            entityManager = JPAUtil.getEntityManager();
+            User user = entityManager.find(User.class, id);
+            return Optional.ofNullable(user);
+
+        } catch (PersistenceException e) {
+            e.printStackTrace();
+        } finally {
+            if (entityManager != null && entityManager.isOpen()) {
+                entityManager.close();
+            }
+        }
+        return Optional.empty();
+    }
 }

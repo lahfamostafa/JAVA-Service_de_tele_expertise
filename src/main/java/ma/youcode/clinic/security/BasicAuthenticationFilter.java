@@ -21,12 +21,15 @@ import ma.youcode.clinic.service.AuthentificationService;
 public class BasicAuthenticationFilter implements ContainerRequestFilter {
     private static final String BASIC_PREFIX = "Basic ";
 
-    private final AuthentificationService authentificationService =
-            new AuthentificationService(new UserRepository());
+    private final AuthentificationService authentificationService = new AuthentificationService(new UserRepository());
 
     @Override
     public void filter(ContainerRequestContext requestContext) {
+        if (requestContext.getUriInfo().getPath().equals("health/database") || requestContext.getUriInfo().getPath().equals("demandes") ) {
+            return ;
+        }
         String authorization = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
+
         if (authorization == null || !authorization.startsWith(BASIC_PREFIX)) {
             abortUnauthorized(requestContext);
             return;
