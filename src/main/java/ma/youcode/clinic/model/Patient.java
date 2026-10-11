@@ -1,6 +1,5 @@
 package ma.youcode.clinic.model;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -25,8 +24,8 @@ public class Patient {
     private String bloodPressure;
     @Column(name = "heart_rate", nullable = false)
     private Integer heartRate;
-    @Column(name = "temperature",precision = 4,scale = 1)
-    private BigDecimal temperature;
+    @Column(name = "temperature", nullable = false)
+    private Float temperature;
     @Column(name = "respiratory_rate", nullable = false)
     private Integer respiratoryRate;
     @Column(name = "arrived_at", nullable = false)
@@ -37,7 +36,7 @@ public class Patient {
 
     public Patient(Long id, String lastName, String firstName, LocalDate birthDate,
             String socialSecurityNumber, String bloodPressure, Integer heartRate,
-            BigDecimal temperature, Integer respiratoryRate, LocalDateTime arrivedAt) {
+            Float temperature, Integer respiratoryRate, LocalDateTime arrivedAt) {
         this.id = id;
         this.lastName = lastName;
         this.firstName = firstName;
@@ -114,11 +113,11 @@ public class Patient {
         this.heartRate = heartRate;
     }
 
-    public BigDecimal getTemperature() {
+    public Float getTemperature() {
         return temperature;
     }
 
-    public void setTemperature(BigDecimal temperature) {
+    public void setTemperature(Float temperature) {
         this.temperature = temperature;
     }
 

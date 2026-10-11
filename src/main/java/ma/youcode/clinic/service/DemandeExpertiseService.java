@@ -83,6 +83,7 @@ public class DemandeExpertiseService {
         demande.setQuestion(dto.getQuestion());
         demande.setPriorite(dto.getPriorite());
         demande.setStatut(StatutDemande.EN_ATTENTE);
+        demande.setDateCreation(LocalDateTime.now());
         demandeRepository.save(demande);
         return demande;
         /*
