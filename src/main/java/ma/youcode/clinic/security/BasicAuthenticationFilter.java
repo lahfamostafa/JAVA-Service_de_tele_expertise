@@ -19,24 +19,33 @@ import ma.youcode.clinic.service.AuthentificationService;
 @Provider
 @Priority(Priorities.AUTHENTICATION)
 public class BasicAuthenticationFilter implements ContainerRequestFilter {
+
     private static final String BASIC_PREFIX = "Basic ";
 
-    private final AuthentificationService authentificationService = new AuthentificationService(new UserRepository());
+    private final AuthentificationService authentificationService =
+            new AuthentificationService(new UserRepository());
 
     @Override
     public void filter(ContainerRequestContext requestContext) {
-        // if (requestContext.getUriInfo().getPath().equals("health/database") || requestContext.getUriInfo().getPath().equals("demandes") ) {
-        //     return ;
-        // }
-        String authorization = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
+        if (requestContext.getUriInfo().getPath()
+                .equals("health/database")) {
+            return;
+        }
 
-        if (authorization == null || !authorization.startsWith(BASIC_PREFIX)) {
+        String authorization =
+                requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
+
+        if (authorization == null
+                || !authorization.startsWith(BASIC_PREFIX)) {
             abortUnauthorized(requestContext);
             return;
         }
 
-        String credentials = decodeCredentials(authorization.substring(BASIC_PREFIX.length()));
+        String credentials = decodeCredentials(
+                authorization.substring(BASIC_PREFIX.length()));
+
         int separatorIndex = credentials.indexOf(':');
+
         if (separatorIndex <= 0) {
             abortUnauthorized(requestContext);
             return;
@@ -46,10 +55,17 @@ public class BasicAuthenticationFilter implements ContainerRequestFilter {
         String password = credentials.substring(separatorIndex + 1);
 
         try {
-            User user = authentificationService.authenticate(username, password);
+            User user = authentificationService.authenticate(
+                    username,
+                    password);
+
             boolean secure = "https".equalsIgnoreCase(
-                    requestContext.getUriInfo().getRequestUri().getScheme());
-            requestContext.setSecurityContext(new UserSecurityContext(user, secure));
+                    requestContext.getUriInfo()
+                            .getRequestUri()
+                            .getScheme());
+
+            requestContext.setSecurityContext(
+                    new UserSecurityContext(user, secure));
         } catch (AuthenticationException exception) {
             abortUnauthorized(requestContext);
         }
@@ -57,19 +73,25 @@ public class BasicAuthenticationFilter implements ContainerRequestFilter {
 
     private String decodeCredentials(String encodedCredentials) {
         try {
-            byte[] decoded = Base64.getDecoder().decode(encodedCredentials);
+            byte[] decoded =
+                    Base64.getDecoder().decode(encodedCredentials);
+
             return new String(decoded, StandardCharsets.UTF_8);
         } catch (IllegalArgumentException exception) {
             return "";
         }
     }
 
-    private void abortUnauthorized(ContainerRequestContext requestContext) {
+    private void abortUnauthorized(
+            ContainerRequestContext requestContext) {
+
         Response response = Response.status(Response.Status.UNAUTHORIZED)
-                .header(HttpHeaders.WWW_AUTHENTICATE, "Basic realm=\"tele-expertise\"")
+                .header(HttpHeaders.WWW_AUTHENTICATE,
+                        "Basic realm=\"tele-expertise\"")
                 .type(MediaType.APPLICATION_JSON)
                 .entity(Map.of("error", "Authentication required"))
                 .build();
+
         requestContext.abortWith(response);
     }
 }

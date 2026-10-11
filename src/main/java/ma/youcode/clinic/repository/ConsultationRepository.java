@@ -1,7 +1,7 @@
 package ma.youcode.clinic.repository;
 
 import ma.youcode.clinic.model.Consultation;
-import ma.youcode.clinic.config.JPAUtil;
+import ma.youcode.clinic.config.JpaUtil;
 
 import java.util.Optional;
 
@@ -12,7 +12,7 @@ public class ConsultationRepository {
     public Optional<Consultation> findById(Long id) {
         EntityManager entityManager = null;
         try {
-            entityManager = JPAUtil.getEntityManager();
+            entityManager = JpaUtil.getEntityManager();
             Consultation consultation = entityManager.find(Consultation.class, id);
             return Optional.ofNullable(consultation);
 

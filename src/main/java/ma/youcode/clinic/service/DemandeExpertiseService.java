@@ -54,12 +54,16 @@ public class DemandeExpertiseService {
         if (consultation.getDoctor() == null
                 || !generaliste.getId()
                         .equals(consultation.getDoctor().getId())) {
-            throw new ForbiddenOperationException (
+            throw new ForbiddenOperationException(
                     "Vous n'etes pas autorise a acceder a cette consultation.");
         }
-        User specialiste = userRepository.findById(dto.getSpecialisteId())
-                .orElseThrow(() -> new RuntimeException(
-                        "NOT_FOUND: Specialiste introuvable."));
+        User specialiste = userRepository.findById(dto.getSpecialisteId());
+
+        if (specialiste == null
+                || specialiste.getRole() != Role.SPECIALISTE) {
+            throw new RuntimeException(
+                    "NOT_FOUND: Specialiste introuvable.");
+        }
 
         if (specialiste.getRole() != Role.SPECIALISTE) {
             throw new RuntimeException(
@@ -79,10 +83,7 @@ public class DemandeExpertiseService {
         demande.setQuestion(dto.getQuestion());
         demande.setPriorite(dto.getPriorite());
         demande.setStatut(StatutDemande.EN_ATTENTE);
-        demande.setDateCreation(LocalDateTime.now());
-
         demandeRepository.save(demande);
-
         return demande;
         /*
          * je dois d abord verifier si cette consultation est dejat lier au medecin

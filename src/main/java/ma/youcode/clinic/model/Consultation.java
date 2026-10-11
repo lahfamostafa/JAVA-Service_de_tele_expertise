@@ -28,7 +28,7 @@ public class Consultation {
     private String diagnosis;
     @Column(name = "prescribed_treatment", columnDefinition = "TEXT")
     private String prescribedTreatment;
-    @Column
+    @Column(name="cost",columnDefinition = "DECIMAL(10,2)")
     private Double cost;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
