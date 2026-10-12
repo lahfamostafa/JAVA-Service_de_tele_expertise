@@ -5,6 +5,7 @@ import java.util.List;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import ma.youcode.clinic.config.JpaUtil;
+import ma.youcode.clinic.model.Consultation;
 import ma.youcode.clinic.model.DemandeExpertise;
 import ma.youcode.clinic.model.StatutDemande;
 
@@ -49,4 +50,16 @@ public class DemandeExpertiseRepository {
         }
     }
 
+    public List<DemandeExpertise> findByConsultationId(Long idConsiltation) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {                                                       
+            String jpql = "SELECT c FROM DemandeExpertise c WHERE c.consultation.id = :idConsultation";
+            return em.createQuery(jpql, DemandeExpertise.class)
+                    .setParameter("idConsultation", idConsiltation)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+
+    }
 }
