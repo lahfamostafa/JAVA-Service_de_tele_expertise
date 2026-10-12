@@ -52,8 +52,8 @@ public class DemandeExpertiseRepository {
 
     public List<DemandeExpertise> findByConsultationId(Long idConsiltation) {
         EntityManager em = JpaUtil.getEntityManager();
-        try {
-            String jpql = "SELECT c FROM DemandeExpertise c WHERE c.consultation_id = :idConsultation";
+        try {                                                       
+            String jpql = "SELECT c FROM DemandeExpertise c WHERE c.consultation.id = :idConsultation";
             return em.createQuery(jpql, DemandeExpertise.class)
                     .setParameter("idConsultation", idConsiltation)
                     .getResultList();

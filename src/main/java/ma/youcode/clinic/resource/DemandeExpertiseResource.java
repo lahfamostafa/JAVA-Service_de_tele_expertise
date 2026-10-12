@@ -14,6 +14,7 @@ import ma.youcode.clinic.exception.ForbiddenOperationException;
 import java.util.List;
 import java.util.Map;
 
+/*consulterDemandes() et demandeConsultation() */
 @Path("demandes")
 @Produces(MediaType.APPLICATION_JSON)
 public class DemandeExpertiseResource {
@@ -60,59 +61,62 @@ public class DemandeExpertiseResource {
     }
 
     @GET
-    @RolesAllowed("SPECIALISTE")
-    public Response consulterDemandes(@QueryParam("statut") String statut,
+    @RolesAllowed({ "GENERALISTE", "SPECIALISTE" })
+    public Response getDemandes(
+            @QueryParam("statut") String statut,
+            @QueryParam("consultationId") Long consultationId,
             @Context SecurityContext securityContext) {
+
+        String username = securityContext.getUserPrincipal().getName();
+
         try {
-            String username = securityContext.getUserPrincipal().getName();
-            List<DemandeResponseDTO> demandes = service
-                    .consulterDemandes(username, statut)
-                    .stream()
+            List<DemandeExpertise> demandes;
+
+            if (consultationId != null) {
+
+                if (!securityContext.isUserInRole("GENERALISTE")) {
+                    throw new ForbiddenOperationException(
+                            "Seul un généraliste peut consulter les demandes d'une consultation.");
+                }
+
+                if (statut != null && !statut.isBlank()) {
+                    return Response.status(Response.Status.BAD_REQUEST)
+                            .entity(Map.of("error",
+                                    "Impossible d'utiliser consultationId et statut ensemble."))
+                            .build();
+                }
+
+                demandes = service.demandeParConsultationd(
+                        username, consultationId);
+
+            } else {
+
+                if (!securityContext.isUserInRole("SPECIALISTE")) {
+                    throw new ForbiddenOperationException(
+                            "Cette opération est réservée aux spécialistes.");
+                }
+
+                demandes = service.consulterDemandes(username, statut);
+            }
+
+            List<DemandeResponseDTO> response = demandes.stream()
                     .map(this::toResponseDTO)
                     .toList();
 
-            return Response.ok(demandes).build();
+            return Response.ok(response).build();
+
         } catch (IllegalArgumentException exception) {
+
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity(Map.of("error", exception.getMessage()))
                     .build();
+
         } catch (ForbiddenOperationException exception) {
+
             return Response.status(Response.Status.FORBIDDEN)
                     .entity(Map.of("error", exception.getMessage()))
                     .build();
         }
-    }
-
-    /*
-     * Voir la demande liée =>pour le faire on doit d abord verifier est ce que la
-     * consultation
-     * à une consultation =>est lier avec l utilisatuer connecter par obligation
-     * generaliste
-     * alors affichier les demandes lier a cette consultation
-     * 
-     */
-    @GET
-    @RolesAllowed("GENERALISTE")
-    public Response demandeConsultation(@QueryParam("consultationId") Long idConsiltation,
-            @Context SecurityContext securityContext) {
-        // on vat recuperer le username de user authetifier
-        try {
-
-            String username = securityContext.getUserPrincipal().getName();
-            List<DemandeResponseDTO> demandes = service.demandeParConsultationd(username, idConsiltation)
-                    .stream().map(this::toResponseDTO).toList();
-            return Response.ok(demandes).build();
-        } catch (IllegalArgumentException exception) {
-
-            return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity(Map.of("error", exception.getMessage()))
-                    .build();
-        } catch (ForbiddenOperationException exception) {
-            return Response.status(Response.Status.FORBIDDEN)
-                    .entity(Map.of("error", exception.getMessage()))
-                    .build();
-        }
-        // return null;
     }
 
     private DemandeResponseDTO toResponseDTO(DemandeExpertise demande) {
