@@ -83,6 +83,38 @@ public class DemandeExpertiseResource {
         }
     }
 
+    /*
+     * Voir la demande liée =>pour le faire on doit d abord verifier est ce que la
+     * consultation
+     * à une consultation =>est lier avec l utilisatuer connecter par obligation
+     * generaliste
+     * alors affichier les demandes lier a cette consultation
+     * 
+     */
+    @GET
+    @RolesAllowed("GENERALISTE")
+    public Response demandeConsultation(@QueryParam("consultationId") Long idConsiltation,
+            @Context SecurityContext securityContext) {
+        // on vat recuperer le username de user authetifier
+        try {
+
+            String username = securityContext.getUserPrincipal().getName();
+            List<DemandeResponseDTO> demandes = service.demandeParConsultationd(username, idConsiltation)
+                    .stream().map(this::toResponseDTO).toList();
+            return Response.ok(demandes).build();
+        } catch (IllegalArgumentException exception) {
+
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity(Map.of("error", exception.getMessage()))
+                    .build();
+        } catch (ForbiddenOperationException exception) {
+            return Response.status(Response.Status.FORBIDDEN)
+                    .entity(Map.of("error", exception.getMessage()))
+                    .build();
+        }
+        // return null;
+    }
+
     private DemandeResponseDTO toResponseDTO(DemandeExpertise demande) {
         DemandeResponseDTO response = new DemandeResponseDTO();
         response.setId(demande.getId());

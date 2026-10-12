@@ -121,6 +121,21 @@ public class DemandeExpertiseService {
                 statutDemande);
     }
 
+    public List<DemandeExpertise> demandeParConsultationd(String username, Long idConsiltation) {
+        User generaliste = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("Utilisateur authentifie introuvable."));
+        Consultation consultation = consultationRepository.findById(idConsiltation)
+                .orElseThrow(() -> new IllegalArgumentException("Consultation introuvable."));
+        if (consultation.getDoctor() == null
+                || !generaliste.getId()
+                        .equals(consultation.getDoctor().getId())) {
+            throw new ForbiddenOperationException(
+                    "Vous n'etes pas autorise a acceder a cette consultation.");
+
+        }
+        return demandeRepository.findByConsultationId(idConsiltation);
+    }
+
     private StatutDemande convertirStatut(String statut) {
         if (statut == null || statut.isBlank()) {
             return null;
@@ -131,6 +146,6 @@ public class DemandeExpertiseService {
         } catch (IllegalArgumentException exception) {
             throw new IllegalArgumentException("Statut invalide.");
         }
-    }
 
+    }
 }
