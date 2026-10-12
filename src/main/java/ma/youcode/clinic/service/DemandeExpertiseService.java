@@ -1,6 +1,8 @@
 package ma.youcode.clinic.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Locale;
 
 import ma.youcode.clinic.dto.DemandeRequestDTO;
 import ma.youcode.clinic.model.Consultation;
@@ -100,6 +102,35 @@ public class DemandeExpertiseService {
         // consultationRepository.findById(dto.getConsultationId())
         // .orElseThrow(() -> new IllegalArgumentException("Consultation introuvable"));
 
+    }
+
+    public List<DemandeExpertise> consulterDemandes(String username,
+            String statut) {
+        User specialiste = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Utilisateur authentifie introuvable."));
+
+        if (specialiste.getRole() != Role.SPECIALISTE) {
+            throw new ForbiddenOperationException(
+                    "Cette ressource est reservee aux specialistes.");
+        }
+
+        StatutDemande statutDemande = convertirStatut(statut);
+
+        return demandeRepository.findBySpecialisteId(specialiste.getId(),
+                statutDemande);
+    }
+
+    private StatutDemande convertirStatut(String statut) {
+        if (statut == null || statut.isBlank()) {
+            return null;
+        }
+
+        try {
+            return StatutDemande.valueOf(statut.trim().toUpperCase(Locale.ROOT));
+        } catch (IllegalArgumentException exception) {
+            throw new IllegalArgumentException("Statut invalide.");
+        }
     }
 
 }

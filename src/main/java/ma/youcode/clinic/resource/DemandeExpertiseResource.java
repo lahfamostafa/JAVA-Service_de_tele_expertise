@@ -11,6 +11,7 @@ import ma.youcode.clinic.dto.DemandeResponseDTO;
 import ma.youcode.clinic.service.DemandeExpertiseService;
 import ma.youcode.clinic.model.DemandeExpertise;
 import ma.youcode.clinic.exception.ForbiddenOperationException;
+import java.util.List;
 import java.util.Map;
 
 @Path("demandes")
@@ -38,16 +39,8 @@ public class DemandeExpertiseResource {
             // DemandeExpertise demande = service.creerDemande(dto , String username);
             DemandeExpertise demande = service.creerDemande(dto, username);
 
-            DemandeResponseDTO resDto = new DemandeResponseDTO();
-            resDto.setId(demande.getId());
-            resDto.setConsultationId(demande.getConsultation().getId());
-            resDto.setSpecialisteId(demande.getSpecialiste().getId());
-            resDto.setQuestion(demande.getQuestion());
-            resDto.setPriorite(demande.getPriorite());
-            resDto.setStatutDemande(demande.getStatut());
-
             return Response.status(Response.Status.CREATED)
-                    .entity(resDto)
+                    .entity(toResponseDTO(demande))
                     .build();
         } catch (IllegalArgumentException e) {
             return Response.status(Response.Status.BAD_REQUEST)
@@ -66,5 +59,38 @@ public class DemandeExpertiseResource {
         }
     }
 
-    // private Boolean verifier
+    @GET
+    @RolesAllowed("SPECIALISTE")
+    public Response consulterDemandes(@QueryParam("statut") String statut,
+            @Context SecurityContext securityContext) {
+        try {
+            String username = securityContext.getUserPrincipal().getName();
+            List<DemandeResponseDTO> demandes = service
+                    .consulterDemandes(username, statut)
+                    .stream()
+                    .map(this::toResponseDTO)
+                    .toList();
+
+            return Response.ok(demandes).build();
+        } catch (IllegalArgumentException exception) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(Map.of("error", exception.getMessage()))
+                    .build();
+        } catch (ForbiddenOperationException exception) {
+            return Response.status(Response.Status.FORBIDDEN)
+                    .entity(Map.of("error", exception.getMessage()))
+                    .build();
+        }
+    }
+
+    private DemandeResponseDTO toResponseDTO(DemandeExpertise demande) {
+        DemandeResponseDTO response = new DemandeResponseDTO();
+        response.setId(demande.getId());
+        response.setConsultationId(demande.getConsultation().getId());
+        response.setSpecialisteId(demande.getSpecialiste().getId());
+        response.setQuestion(demande.getQuestion());
+        response.setPriorite(demande.getPriorite());
+        response.setStatutDemande(demande.getStatut());
+        return response;
+    }
 }
